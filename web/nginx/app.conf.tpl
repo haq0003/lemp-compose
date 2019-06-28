@@ -1,0 +1,32 @@
+upstream php {
+        server phpfpm:9000;
+}
+ 
+server {
+ 
+        server_name [[DOMAIN]];
+        listen 8081;
+ 
+        error_log "/opt/bitnami/nginx/logs/myapp-error.log";
+        access_log  "/opt/bitnami/nginx/logs/myapp-access.log";
+ 
+        root /myapps;
+        index index.php index.html;
+ 
+        location / {
+ 
+                try_files $uri $uri/ /index.php?$args;
+        }
+ 
+        location ~ \.php$ {
+ 
+                include fastcgi.conf;
+                fastcgi_intercept_errors on;
+                fastcgi_pass php;
+        }
+ 
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+                expires max;
+                log_not_found off;
+        }
+}
