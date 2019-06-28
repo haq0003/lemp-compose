@@ -20,6 +20,7 @@ workspace:
 
 mysql:
     image: 'mariadb'
+    #image: 'linuxserver/mariadb:arm64v8-latest' For ARM
     restart: always
     volumes:
         - ./web/db-data:/var/lib/mysql
